@@ -1526,6 +1526,31 @@ module Addressable
     end
 
     ##
+    # Sets the query component for this URI from a Hash object.
+    # An empty Hash or Array will result in an empty query string.
+    #
+    # @param [Hash, #to_hash, Array] new_query_values The new query values.
+    #
+    # @example
+    #   uri.query_values = {:a => "a", :b => ["c", "d", "e"]}
+    #   uri.query
+    #   # => "a=a&b=c&b=d&b=e"
+    #   uri.query_values = [['a', 'a'], ['b', 'c'], ['b', 'd'], ['b', 'e']]
+    #   uri.query
+    #   # => "a=a&b=c&b=d&b=e"
+    #   uri.query_values = [['a', 'a'], ['b', ['c', 'd', 'e']]]
+    #   uri.query
+    #   # => "a=a&b=c&b=d&b=e"
+    #   uri.query_values = [['flag'], ['key', 'value']]
+    #   uri.query
+    #   # => "flag&key=value"
+    def set_query_value(key, val)
+      existing = self.query_values
+      pair = {key => val}
+      self.query_values = existing ? existing.merge(pair) : pair
+    end
+
+    ##
     # The HTTP request URI for this URI.  This is the path and the
     # query string.
     #
